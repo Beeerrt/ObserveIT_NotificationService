@@ -4,7 +4,7 @@ var infounitModel = mongoose.model('infounit');
 
 
 exports.get = getLatestInfounits;
-async function getLatestInfounits()
+async function getLatestInfounits(nodeid)
 {  
     //DB Abfrage der Aktuellen Infounits 
     

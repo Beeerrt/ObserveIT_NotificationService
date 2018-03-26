@@ -1,3 +1,4 @@
+var model = require('../model/limitModel');
 var mongoose = require('mongoose');
 var limitModel = mongoose.model('limit');
 
@@ -5,7 +6,7 @@ var limitModel = mongoose.model('limit');
 
 exports.get = getLimit;
 
-async function getLimit(req, res){
-    var result = await limitModel.find({});
-    res.jsonp(result);
+async function getLimit(){
+    var result = await limitModel.find({}).limit(1);
+    return result[0];
 }
