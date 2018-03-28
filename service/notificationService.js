@@ -17,6 +17,7 @@ idList = [];
 async function intervalFunction() {
     //prüfen ob Service aktiviert ist
     var isActive = await telegramStatusController.getStatus();
+
     if (isActive) {
 
 
@@ -75,11 +76,6 @@ async function intervalFunction() {
             });
         }
         await start();
-
-        infounitController.getAllInfounits();
-
-
-
     }
 
 }

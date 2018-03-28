@@ -18,38 +18,3 @@ async function getInfounitID() {
 
     return result;
 }
-
-exports.getAllInfounits = getAllInfounits;
-async function getAllInfounits() {
-
-    await getInfounitID().then(idList => {
-        idList =[];
-        idList = Array.from(idList);
-        console.log(idList);
-
-        //laden der Aktuellsten Infounits
-        infounitList = [];
-        console.log(infounitList);
-
-
-    });
-
-
-    // infounitList =[];
-
-    // for(var i = 0; i <= idList.count; i++)
-    // {
-    //     var currentInfounit = await getLatestInfounits(i).then(infounit => {
-    //         infounitList.push(infounit);
-    //     });
-    //}
-
-
-}
-
-async function test(){
-    for(let i = 0; i < idList.count; i++){
-        await getLatestInfounits(i);
-        console.log(i);
-    }
-}
