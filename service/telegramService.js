@@ -12,15 +12,14 @@ var opt = { polling: true };
 //create Bot
 var bot = new TelegramBot(token, opt);
 
-exports.send = send;
 
-async function send(message) {
+exports.send = async function send(message) {
     //load Telegram ID's
     var idlist = await loadTelegramUserID().then(idList => {
-        var currentID = idList[0].telegramid;
-        console.log(currentID);
-        bot.sendMessage(currentID
-            , message);
+        for (let current of idList) {
+            console.log("send Message to: " + current.telegramid);
+            bot.sendMessage(current.telegramid, message);
+        }
     });
 }
 
@@ -78,13 +77,14 @@ async function sendGet(msg) {
         for (let nodeid of idList) {
             console.log("Abfrage Infounit");
             var currentinfounit = await infounitController.get(nodeid);
-            console.log(currentinfounit);
+            console.log(currentinfounit.level);
             //Message generieren
             var message = "NodeID: " + nodeid + ";\n";
             message += "Temperatur: " + currentinfounit.temperatur + "\n";
             message += "Helligkeit: " + currentinfounit.brightness + "\n";
             message += "Luftfeuchtigkeit: " + currentinfounit.humidity + "\n";
             message += "Neigungs Abweichung: " + currentinfounit.incline + "\n";
+            message += "Batterieladung: " + currentinfounit.level + "\n";
 
             bot.sendMessage(id, message);
 
@@ -94,13 +94,6 @@ async function sendGet(msg) {
 
 
 
-}
-
-
-async function asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array)
-    }
 }
 
 

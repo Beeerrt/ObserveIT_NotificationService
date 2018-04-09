@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 
 
-//MongoDB Connection
+//MongoDB Connection Starten
 mongoose.connect(config.database);
 
 //Verbindung zur Datenbank erfolgreich

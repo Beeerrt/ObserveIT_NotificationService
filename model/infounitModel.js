@@ -11,7 +11,8 @@ var infounitSchema = new schmea({
     incline: String,
     humidity: String,
     brightness: String,
-    positon: String
+    position: String,
+    level: String
 
 });
 

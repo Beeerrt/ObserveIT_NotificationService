@@ -12,13 +12,14 @@ var limitSchema = new schmea({
     minHumidity: String,
      //helligkeit
     maxBrightness: String,
-    minBrightness: String
+    minBrightness: String,
+    //Batterieladung
+    level: String
 });
 
 limitSchema.statics = {
     load: function(id, cb){
         this.findOne({_id : id}).exec(cb);
-        //this.find().exec(cb);
     }
 };
 
