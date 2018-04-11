@@ -3,9 +3,10 @@ var mongoose = require('mongoose');
 
 
 
-
-exports.getStatus = getStatus;
-async function getStatus()
+/**
+ * Gibt den aktuellen Aktivierungsstatus des Benachrichtigung Service zurück
+ */
+exports.getStatus = async function getStatus()
 {  
     //DB Abfrage des aktuellen TelegramStatus 
     result = await telegramStatusModel.find({}).limit(1);

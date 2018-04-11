@@ -9,10 +9,13 @@ var token = config.token;
 //polling options
 var opt = { polling: true };
 
-//create Bot
+//Bot erstellen
 var bot = new TelegramBot(token, opt);
 
-
+/**
+ * Schickt Nachricht an alle in der Datenbank enthaltenen Telegram Nutzer
+ * @param {*} message 
+ */
 exports.send = async function send(message) {
     //load Telegram ID's
     var idlist = await loadTelegramUserID().then(idList => {
@@ -23,61 +26,65 @@ exports.send = async function send(message) {
     });
 }
 
+/*
+ *Lädt Liste aller Telegram Nutzer in der Datenbank
+ */
 async function loadTelegramUserID() {
     var idList = await telegramController.get();
     return idList;
 }
 
 //ID des anfragenden Telegram user
+/**
+ * Reagiert auf das Kommando ID
+ * Liefert die Telegram ID des aufrufenden Telegram Nutzers zurück
+ */
 bot.onText(/\/id/, (msg) => {
     //get sender id
     var id = msg.chat.id;
     bot.sendMessage(id, "Deine Telegram ID lautet: " + msg.chat.id);
 });
 
-//Hallo TestCommand
-bot.onText(/\/hallo/, (msg) => {
-    //get sender id
-    var id = msg.chat.id;
-    bot.sendMessage(id, "hallo " + msg.chat.first_name);
-});
 
+/**
+ * Reagiert auf das Kommando GET
+ * Liefert alle Sensordaten dem autorisierten Telegram Nutzer zurück
+ */
 bot.onText(/\/get/, (msg) => {
     sendGet(msg)
 });
 
+/**
+ * Schickt an den autorisierten Telegram Nutzer eine Liste alle Sensorwerte zurück
+ * @param {any} msg 
+ */
 async function sendGet(msg) {
-    //get sender id
+    //Telegram ID des angefragten Telegram Users extrahieren
     var id = msg.chat.id;
-    var idList = [];
-    idList = await infounitController.count();
-    idList = Array.from(idList);
 
-    console.log("Abfrage User");
+    //Laden des TelegramUser anhand der TelegramID des eingegangenen Chats
     user = await telegramController.getUserByID(id);
-    console.log("User Abgefragt");
+
     //Prüfen ob Telegram ID regestriert ist
-    // telegramController.getUserByID(id).then(user => {
-    //user ist nicht registriert
+    //User ist nicht autorisiert
     if (user == null) {
         var message = "Sie sind nicht Authorisiert diesen Command auszuführen!\n";
         message += "Bitte kontakieren Sie den Admin!";
+        //Message an angefragten Telegram User senden
         bot.sendMessage(id, message);
-
-        console.log("Break");
     }
+    //User ist autorisiert
     else {
+        //Laden der ID's aller Nodes in der Datenbank
+        var idList = [];
+        idList = await infounitController.count();
+        idList = Array.from(idList);
 
-
-        //Alle Node Infos senden
-        // infounitController.
         bot.sendMessage(id, "Sie sind Authorisiert");
-
-        //console.log(this.idList);
+        //Schleife durch alle Nodes
         for (let nodeid of idList) {
-            console.log("Abfrage Infounit");
             var currentinfounit = await infounitController.get(nodeid);
-            console.log(currentinfounit.level);
+
             //Message generieren
             var message = "NodeID: " + nodeid + ";\n";
             message += "Temperatur: " + currentinfounit.temperatur + "\n";
@@ -85,15 +92,14 @@ async function sendGet(msg) {
             message += "Luftfeuchtigkeit: " + currentinfounit.humidity + "\n";
             message += "Neigungs Abweichung: " + currentinfounit.incline + "\n";
             message += "Batterieladung: " + currentinfounit.level + "\n";
-
+            
+            //Message an angefragten Telegram User senden
             bot.sendMessage(id, message);
-
         }
-        console.log("Fertig mit senden");
     }
-
-
-
 }
+
+
+
 
 

@@ -3,10 +3,10 @@ var mongoose = require('mongoose');
 var limitModel = mongoose.model('limit');
 
 
-
-exports.get = getLimit;
-
-async function getLimit(){
+/**
+ * Lädt die aktuellen Limits
+ */
+exports.get = async function getLimit(){
     var result = await limitModel.find({}).limit(1);
     return result[0];
 }

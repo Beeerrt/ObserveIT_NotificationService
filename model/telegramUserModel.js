@@ -23,7 +23,6 @@ var telegramUserSchema = mongoose.Schema({
 telegramUserSchema.statics = {
     load: function(id, cb){
         this.findOne({telegramid : id}).exec(cb);
-        //this.find().exec(cb);
     }
     
 };
