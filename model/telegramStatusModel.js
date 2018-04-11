@@ -13,7 +13,6 @@ var telegramStatusSchema = new schmea({
 telegramStatusSchema.statics = {
     load: function(cb){
         this.find({}).exec(cb);
-        //this.find().exec(cb);
     }
 };
 

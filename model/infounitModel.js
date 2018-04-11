@@ -19,7 +19,6 @@ var infounitSchema = new schmea({
 infounitSchema.statics = {
     load: function(id, cb){
         this.findOne({_id : id}).exec(cb);
-        //this.find().exec(cb);
     }
 };
 
